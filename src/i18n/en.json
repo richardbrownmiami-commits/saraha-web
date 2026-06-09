@@ -1,6 +1,6 @@
 {
   "app": {
-    "name": "Saraha",
+    "name": "Skytron",
     "tagline": "Your AI Assistant"
   },
   "nav": {
@@ -19,7 +19,7 @@
     "model": "Model",
     "newChat": "New Chat",
     "search": "Search conversations...",
-    "emptyTitle": "Hello! I'm Saraha",
+    "emptyTitle": "Hello! I'm Skytron",
     "emptyDesc": "Your AI assistant powered by advanced language models. Ask me anything!",
     "error": "Failed to send message",
     "retry": "Retry",
@@ -86,11 +86,11 @@
     "title": "Settings",
     "api": "API Configuration",
     "apiKey": "API Key",
-    "apiKeyDesc": "Your Saraha Brain API key for authentication",
+    "apiKeyDesc": "Gateway API key for authentication (default: Saraha-Brain-Key)",
     "gatewayUrl": "Gateway URL",
     "gatewayUrlDesc": "Buddhi Dwar gateway endpoint",
     "brainUrl": "Brain URL",
-    "brainUrlDesc": "Saraha Brain worker endpoint",
+    "brainUrlDesc": "Skytron Brain worker endpoint",
     "model": "Model",
     "modelDesc": "LLM model for chat",
     "temperature": "Temperature",
@@ -116,7 +116,7 @@
     "confirmClear": "Clear all conversations and settings?",
     "about": "About",
     "version": "Version",
-    "description": "Saraha Web â€” AI Assistant powered by Buddhi Dwar",
+    "description": "Skytron Web â€” AI Assistant powered by Buddhi Dwar",
     "saved": "Settings saved",
     "reset": "Reset to defaults"
   },

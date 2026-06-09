@@ -1,7 +1,13 @@
 import { useTranslation } from 'react-i18next'
 import { useBrain } from '../hooks/useBrain'
 
-const PHASE_ICONS = { awake: 'âœ¨', tired: 'ðŸ˜´', curious: 'ðŸ”', sleeping: 'ðŸ’¤', busy: 'âš¡' }
+const PHASE_SVG = {
+  awake: <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>,
+  tired: <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>,
+  curious: <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>,
+  sleeping: <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646zM12 8v4l3 3" /></svg>,
+  busy: <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>,
+}
 const PHASE_COLORS = { awake: '#2E86AB', tired: '#6B7280', curious: '#F18F01', sleeping: '#6366F1', busy: '#EF4444' }
 
 function EmotionBar({ label, value, color }) {
@@ -24,7 +30,7 @@ function EnergyGauge({ energy }) {
   const color = pct > 60 ? '#10B981' : pct > 30 ? '#F59E0B' : '#EF4444'
   return (
     <div className="flex items-center gap-3 bg-[var(--color-bg)] rounded-xl p-3 border border-[var(--color-border)]">
-      <span className="text-2xl">âš¡</span>
+      <svg className="w-6 h-6 text-[var(--color-accent)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
       <div className="flex-1 space-y-1">
         <div className="flex justify-between text-xs">
           <span className="text-[var(--color-text-sec)]">Energy</span>
@@ -43,7 +49,7 @@ export default function BrainPage() {
   const { emotions, phase, activity, stream, loading, error, autoRefresh, setAutoRefresh, refresh } = useBrain()
 
   const currentPhase = phase?.phase || emotions?.current_phase || 'awake'
-  const phaseIcon = PHASE_ICONS[currentPhase] || 'âœ¨'
+  const phaseIcon = PHASE_SVG[currentPhase] || PHASE_SVG.awake
   const phaseColor = PHASE_COLORS[currentPhase] || '#2E86AB'
   const e = emotions || {}
 
@@ -65,14 +71,14 @@ export default function BrainPage() {
 
         {loading && (
           <div className="text-center py-12 text-sm text-[var(--color-text-sec)]">
-            <div className="animate-spin-slow inline-block text-3xl mb-3">ðŸ§ </div>
+            <svg className="animate-spin-slow w-10 h-10 mx-auto mb-3 text-[var(--color-brand)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>
             <p>{t('brain.loading')}</p>
           </div>
         )}
 
         {error && (
           <div className="bg-red-900/30 border border-red-800/50 rounded-xl px-4 py-3 text-sm text-red-400 flex items-center gap-2">
-            <span>âš ï¸</span>
+            <svg className="w-5 h-5 shrink-0 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" /></svg>
             <span>{t('brain.error')}: {error}</span>
           </div>
         )}
@@ -82,7 +88,7 @@ export default function BrainPage() {
             <div className="bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-2xl p-5 space-y-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <span className="text-4xl">{phaseIcon}</span>
+                  <span className="w-8 h-8" style={{ color: phaseColor }}>{phaseIcon}</span>
                   <div>
                     <p className="text-xs text-[var(--color-text-sec)]">{t('brain.phase')}</p>
                     <p className="text-lg font-bold" style={{ color: phaseColor }}>{t(`brain.${currentPhase}`)}</p>
@@ -130,7 +136,9 @@ export default function BrainPage() {
                 <div className="space-y-2 max-h-48 overflow-y-auto scrollbar-thin">
                   {stream.slice(0, 10).map((item, i) => (
                     <div key={i} className="flex items-start gap-3 text-sm py-2 border-b border-[var(--color-border)]/50 last:border-0">
-                      <span className="mt-1 text-xs">{item.mood === 'happy' ? 'ðŸ˜Š' : item.mood === 'curious' ? 'ðŸ¤”' : 'ðŸ’­'}</span>
+                      <span className="mt-1 w-4 h-4">
+                        {item.mood === 'happy' ? <svg className="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg> : item.mood === 'curious' ? <svg className="w-4 h-4 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg> : <svg className="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>}
+                      </span>
                       <p className="text-[var(--color-text)] text-xs">{typeof item.content === 'string' ? item.content.slice(0, 200) : ''}</p>
                     </div>
                   ))}

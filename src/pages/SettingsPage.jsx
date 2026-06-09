@@ -1,0 +1,223 @@
+import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { useSettings } from '../context/SettingsContext'
+
+const LANGUAGES = [
+  { code: 'en', name: 'English', native: 'English' },
+  { code: 'hi', name: 'Hindi', native: 'à¤¹à¤¿à¤¨à¥à¤¦à¥€' },
+]
+
+const MODELS = [
+  'llama-3.3-70b-versatile',
+  'llama-3.1-70b-versatile',
+  'mixtral-8x7b-32768',
+  'gemma2-9b-it',
+  'mistral-small-latest',
+]
+
+export default function SettingsPage() {
+  const { t, i18n } = useTranslation()
+  const { settings, updateSettings } = useSettings()
+  const [saved, setSaved] = useState(false)
+
+  const handleSave = () => {
+    setSaved(true)
+    setTimeout(() => setSaved(false), 2000)
+  }
+
+  return (
+    <div className="h-full overflow-y-auto scrollbar-thin">
+      <div className="max-w-3xl mx-auto p-4 md:p-6 space-y-4">
+        <h1 className="text-xl font-bold text-[var(--color-text)]">{t('settings.title')}</h1>
+
+        <Section title={t('settings.api')}>
+          <Field label={t('settings.apiKey')} desc={t('settings.apiKeyDesc')}>
+            <input
+              type="password"
+              value={settings.apiKey}
+              onChange={(e) => updateSettings({ apiKey: e.target.value })}
+              className="w-full bg-[var(--color-bg)] text-[var(--color-text)] rounded-xl px-4 py-2.5 text-sm border border-[var(--color-border)] focus:outline-none focus:border-[var(--color-brand)] transition-colors"
+            />
+          </Field>
+          <Field label={t('settings.gatewayUrl')} desc={t('settings.gatewayUrlDesc')}>
+            <input
+              type="url"
+              value={settings.gatewayUrl}
+              onChange={(e) => updateSettings({ gatewayUrl: e.target.value })}
+              className="w-full bg-[var(--color-bg)] text-[var(--color-text)] rounded-xl px-4 py-2.5 text-sm border border-[var(--color-border)] focus:outline-none focus:border-[var(--color-brand)] transition-colors"
+            />
+          </Field>
+          <Field label={t('settings.brainUrl')} desc={t('settings.brainUrlDesc')}>
+            <input
+              type="url"
+              value={settings.brainUrl}
+              onChange={(e) => updateSettings({ brainUrl: e.target.value })}
+              className="w-full bg-[var(--color-bg)] text-[var(--color-text)] rounded-xl px-4 py-2.5 text-sm border border-[var(--color-border)] focus:outline-none focus:border-[var(--color-brand)] transition-colors"
+            />
+          </Field>
+        </Section>
+
+        <Section title={t('settings.model')}>
+          <Field label={t('settings.model')} desc={t('settings.modelDesc')}>
+            <select
+              value={settings.model}
+              onChange={(e) => updateSettings({ model: e.target.value })}
+              className="w-full bg-[var(--color-bg)] text-[var(--color-text)] rounded-xl px-4 py-2.5 text-sm border border-[var(--color-border)] focus:outline-none focus:border-[var(--color-brand)] transition-colors"
+            >
+              {MODELS.map(m => <option key={m} value={m}>{m}</option>)}
+            </select>
+          </Field>
+          <Field label={t('settings.temperature')} desc={t('settings.temperatureDesc')}>
+            <div className="flex items-center gap-3">
+              <input
+                type="range"
+                min="0"
+                max="2"
+                step="0.1"
+                value={settings.temperature}
+                onChange={(e) => updateSettings({ temperature: parseFloat(e.target.value) })}
+                className="flex-1 accent-[var(--color-brand)]"
+              />
+              <span className="text-sm font-mono text-[var(--color-text)] w-8 text-right">{settings.temperature}</span>
+            </div>
+          </Field>
+          <Field label={t('settings.maxTokens')} desc={t('settings.maxTokensDesc')}>
+            <select
+              value={settings.maxTokens}
+              onChange={(e) => updateSettings({ maxTokens: parseInt(e.target.value) })}
+              className="w-full bg-[var(--color-bg)] text-[var(--color-text)] rounded-xl px-4 py-2.5 text-sm border border-[var(--color-border)] focus:outline-none focus:border-[var(--color-brand)] transition-colors"
+            >
+              {[1024, 2048, 4096, 8192].map(n => <option key={n} value={n}>{n}</option>)}
+            </select>
+          </Field>
+          <Field label={t('settings.stream')} desc={t('settings.streamDesc')}>
+            <label className="relative inline-flex items-center cursor-pointer">
+              <input
+                type="checkbox"
+                checked={settings.stream}
+                onChange={(e) => updateSettings({ stream: e.target.checked })}
+                className="sr-only peer"
+              />
+              <div className="w-11 h-6 bg-[var(--color-border)] rounded-full peer peer-checked:bg-[var(--color-brand)] after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-full" />
+            </label>
+          </Field>
+        </Section>
+
+        <Section title={t('settings.appearance')}>
+          <Field label={t('settings.theme')}>
+            <div className="flex gap-2">
+              {['dark', 'light', 'system'].map(theme => (
+                <button
+                  key={theme}
+                  onClick={() => updateSettings({ theme })}
+                  className={`px-4 py-2 text-sm rounded-xl border transition-colors ${
+                    settings.theme === theme
+                      ? 'bg-[var(--color-brand)] text-white border-[var(--color-brand)]'
+                      : 'bg-[var(--color-bg)] text-[var(--color-text-sec)] border-[var(--color-border)] hover:border-[var(--color-brand)]'
+                  }`}
+                >
+                  {t(`settings.${theme}`)}
+                </button>
+              ))}
+            </div>
+          </Field>
+
+          <Field label={t('settings.language')} desc={t('settings.languageDesc')}>
+            <select
+              value={i18n.language}
+              onChange={(e) => { updateSettings({ language: e.target.value }); i18n.changeLanguage(e.target.value) }}
+              className="w-full bg-[var(--color-bg)] text-[var(--color-text)] rounded-xl px-4 py-2.5 text-sm border border-[var(--color-border)] focus:outline-none focus:border-[var(--color-brand)] transition-colors"
+            >
+              {LANGUAGES.map(l => (
+                <option key={l.code} value={l.code}>{l.native} ({l.name})</option>
+              ))}
+            </select>
+          </Field>
+        </Section>
+
+        <Section title={t('settings.data')}>
+          <button
+            onClick={() => {
+              const data = { settings, conversations: JSON.parse(localStorage.getItem('saraha-conversations') || '[]') }
+              const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' })
+              const url = URL.createObjectURL(blob)
+              const a = document.createElement('a'); a.href = url; a.download = 'saraha-backup.json'; a.click()
+              URL.revokeObjectURL(url)
+            }}
+            className="w-full bg-[var(--color-bg)] hover:bg-[var(--color-bg-hover)] text-[var(--color-text)] border border-[var(--color-border)] rounded-xl py-2.5 text-sm transition-colors"
+          >
+            {t('settings.exportAll')}
+          </button>
+          <button
+            onClick={() => {
+              const input = document.createElement('input')
+              input.type = 'file'; input.accept = '.json'
+              input.onchange = (e) => {
+                const file = e.target.files[0]
+                if (!file) return
+                const reader = new FileReader()
+                reader.onload = (ev) => {
+                  try {
+                    const data = JSON.parse(ev.target.result)
+                    if (data.settings) updateSettings(data.settings)
+                    if (data.conversations) localStorage.setItem('saraha-conversations', JSON.stringify(data.conversations))
+                    window.location.reload()
+                  } catch {}
+                }
+                reader.readAsText(file)
+              }
+              input.click()
+            }}
+            className="w-full bg-[var(--color-bg)] hover:bg-[var(--color-bg-hover)] text-[var(--color-text)] border border-[var(--color-border)] rounded-xl py-2.5 text-sm transition-colors"
+          >
+            {t('settings.importData')}
+          </button>
+          <button
+            onClick={() => { if (window.confirm(t('settings.confirmClear'))) { localStorage.clear(); window.location.reload() } }}
+            className="w-full bg-red-900/20 hover:bg-red-900/40 text-red-400 border border-red-800/50 rounded-xl py-2.5 text-sm transition-colors"
+          >
+            {t('settings.clearAll')}
+          </button>
+        </Section>
+
+        <Section title={t('settings.about')}>
+          <div className="text-center py-4">
+            <span className="text-4xl mb-3 block">ðŸ§ </span>
+            <p className="text-lg font-bold text-[var(--color-text)]">{t('app.name')} Web</p>
+            <p className="text-xs text-[var(--color-text-muted)]">{t('settings.version')} 1.0.0</p>
+            <p className="text-sm text-[var(--color-text-sec)] mt-2">{t('settings.description')}</p>
+          </div>
+        </Section>
+
+        {saved && (
+          <div className="fixed bottom-6 right-6 bg-[var(--color-success)] text-white px-4 py-2 rounded-xl text-sm shadow-lg animate-fadeIn">
+            âœ“ {t('settings.saved')}
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+
+function Section({ title, children }) {
+  return (
+    <div className="bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-2xl overflow-hidden">
+      <div className="px-5 py-3 border-b border-[var(--color-border)] bg-[var(--color-bg)]/50">
+        <h2 className="text-xs font-semibold text-[var(--color-brand)] uppercase tracking-wider">{title}</h2>
+      </div>
+      <div className="p-5 space-y-4">{children}</div>
+    </div>
+  )
+}
+
+function Field({ label, desc, children }) {
+  return (
+    <div className="space-y-2">
+      <div>
+        <label className="text-sm font-medium text-[var(--color-text)]">{label}</label>
+        {desc && <p className="text-[11px] text-[var(--color-text-muted)]">{desc}</p>}
+      </div>
+      {children}
+    </div>
+  )
+}

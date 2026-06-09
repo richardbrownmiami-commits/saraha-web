@@ -61,7 +61,7 @@ export default function ChatPage() {
                 onClick={(e) => { e.stopPropagation(); deleteConversation(conv.id) }}
                 className="opacity-0 group-hover:opacity-100 text-[var(--color-text-muted)] hover:text-[var(--color-error)] text-xs px-1 transition-opacity"
               >
-                âœ•
+                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
               </button>
             </div>
           ))}
@@ -87,7 +87,7 @@ export default function ChatPage() {
         <div className="flex-1 overflow-y-auto scrollbar-thin py-4 space-y-4">
           {messages.length === 0 && !isStreaming ? (
             <div className="flex flex-col items-center justify-center h-full px-8 text-center">
-              <span className="text-6xl mb-4">ðŸ§ </span>
+              <svg className="w-16 h-16 mb-4 text-[var(--color-brand)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>
               <h2 className="text-xl font-bold text-[var(--color-text)] mb-2">{t('chat.emptyTitle')}</h2>
               <p className="text-sm text-[var(--color-text-sec)] max-w-md">{t('chat.emptyDesc')}</p>
             </div>
@@ -104,7 +104,7 @@ export default function ChatPage() {
 
         {error && (
           <div className="mx-4 mb-2 bg-red-900/30 border border-red-800/50 rounded-xl px-4 py-2 flex items-center gap-2 text-sm text-red-400">
-            <span>âš ï¸</span>
+            <svg className="w-5 h-5 shrink-0 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" /></svg>
             <span className="flex-1">{error}</span>
           </div>
         )}

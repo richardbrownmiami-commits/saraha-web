@@ -7,7 +7,8 @@
     "chat": "Chat",
     "brain": "Brain",
     "monitor": "Monitor",
-    "settings": "Settings"
+    "settings": "Settings",
+    "prompt": "Prompt"
   },
   "chat": {
     "title": "Chat",
@@ -116,9 +117,14 @@
     "about": "About",
     "version": "Version",
     "description": "Saraha Web â€” AI Assistant powered by Buddhi Dwar",
-    "save": "Save Settings",
     "saved": "Settings saved",
     "reset": "Reset to defaults"
+  },
+  "prompt": {
+    "title": "System Prompt",
+    "systemPrompt": "System Prompt",
+    "howItWorks": "How It Works",
+    "howItWorksDesc": "This system prompt is sent with every chat message to instruct the AI on its identity, available tools, response format (ReAct), and behavioral rules. The prompt defines Skytron's personality, capabilities, and constraints â€” including the hard rule against financial transactions."
   },
   "common": {
     "loading": "Loading...",

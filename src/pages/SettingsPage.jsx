@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSettings } from '../context/SettingsContext'
+import { useBridge } from '../hooks/useBridge'
 
 const LANGUAGES = [
   { code: 'en', name: 'English', native: 'English' },
@@ -18,6 +19,7 @@ const MODELS = [
 export default function SettingsPage() {
   const { t, i18n } = useTranslation()
   const { settings, updateSettings } = useSettings()
+  const bridge = useBridge()
   const [saved, setSaved] = useState(false)
 
   const handleSave = () => {

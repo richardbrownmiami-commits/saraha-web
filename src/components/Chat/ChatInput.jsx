@@ -53,6 +53,19 @@ export default function ChatInput({ onSend, onStop, isStreaming }) {
     setRecording(false)
   }
 
+  const handleFilePicker = async () => {
+    try {
+      const uri = await bridge.pickFile()
+      if (uri) { onSend("[File](" + uri + ")") }
+    } catch {}
+  }
+
+  const handlePaste = async () => {
+    try {
+      const text = await bridge.getClipboard()
+      if (text) { setInput(prev => prev + text); if (textareaRef.current) { textareaRef.current.focus() } }
+    } catch {}
+  }
   const handleCamera = async () => {
     try {
       const granted = await bridge.requestPermission("camera")
@@ -76,6 +89,22 @@ export default function ChatInput({ onSend, onStop, isStreaming }) {
               title={t("chat.voiceInput")}
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v3m-4 0h8" /></svg>
+            </button>
+            <button
+              onClick={handleFilePicker}
+              disabled={isStreaming}
+              className="shrink-0 bg-[var(--color-bg)] text-[var(--color-text-sec)] hover:text-[var(--color-text)] rounded-xl px-3 py-3 text-sm border border-[var(--color-border)] transition-colors disabled:opacity-40"
+              title="Attach file"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" /></svg>
+            </button>
+            <button
+              onClick={handlePaste}
+              disabled={isStreaming}
+              className="shrink-0 bg-[var(--color-bg)] text-[var(--color-text-sec)] hover:text-[var(--color-text)] rounded-xl px-3 py-3 text-sm border border-[var(--color-border)] transition-colors disabled:opacity-40"
+              title="Paste from clipboard"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg>
             </button>
             <button
               onClick={handleCamera}

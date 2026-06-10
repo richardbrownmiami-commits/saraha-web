@@ -23,4 +23,10 @@ export const useBridge = () => ({
   speakText: bridge.speak || (() => {}),
   notify: bridge.notify || (() => {}),
   isAvailable: !!window.AndroidBridge,
+  dbGet: bridge.dbGet || ((t, k) => Promise.resolve("")),
+  dbSet: bridge.dbSet || ((t, k, v) => {}),
+  dbDel: bridge.dbDel || ((t, k) => {}),
+  dbClear: bridge.dbClear || ((t) => {}),
+  syncEnq: bridge.syncEnq || ((a, t, k, v) => Promise.resolve("")),
+  syncStat: bridge.syncStat || (() => Promise.resolve('{"pending":0,"failed":0}')),
 });

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import StatusBar from './StatusBar' from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 
@@ -79,7 +80,7 @@ export default function Layout({ children }) {
           <div className="w-10" />
         </header>
 
-        <main className="flex-1 overflow-hidden">
+        <StatusBar />`n        <main className="flex-1 overflow-hidden">
           {children}
         </main>
       </div>
